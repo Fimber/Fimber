@@ -1,19 +1,25 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Fimber Elemuwa — Portfolio
 
-# Run and deploy your AI Studio app
+Personal portfolio and technical blog for [fimberelemuwa.com](https://fimberelemuwa.com).
 
-This contains everything you need to run your app locally.
-https://ai.studio/apps/3af0e540-69f2-470a-b7bb-535970d1e27b
+Built with React, Vite, Tailwind CSS, and static prerendering for SEO and LLM-friendly crawling.
 
-## Run Locally
+## Run locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js 18+
 
+1. Install dependencies: `npm install`
+2. Copy `.env.example` to `.env` and set `VITE_SITE_URL` (optional) and `GEMINI_API_KEY` if using AI features in the admin panel
+3. Start dev server: `npm run dev`
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Build
+
+```bash
+npm run build
+```
+
+Generates `dist/` with prerendered routes (`/`, `/blog`, `/writing/:id`), `sitemap.xml`, `robots.txt`, and `llms.txt`.
+
+## Deploy
+
+Serve the `dist/` folder as static files. Ensure each prerendered path (e.g. `/blog`, `/writing/post-id`) resolves to its `index.html`.
