@@ -1,0 +1,25 @@
+# Fimber Elemuwa
+
+> B2B SaaS Technical Content Writer. Technical content writer specializing in B2B SaaS, developer-focused tutorials, SEO content strategy, and technical deep-dives.
+
+## Main pages
+
+- [Portfolio home](https://fimberelemuwa.com/): Services, selected work, experience, testimonials, and contact.
+- [Technical blog](https://fimberelemuwa.com/blog): Technical articles on B2B SaaS, developer tooling, security, scraping, and content strategy.
+
+## Articles
+
+- [Building Fine-Grained Role Based Access Control (RBAC) in React Apps](https://fimberelemuwa.com/writing/post-rbac-react): Deep dive into implementing flexible permissions, guarding routes, and managing user roles dynamically in modern component architectures.
+- [The Developer's Handbook to Bypassing Modern Anti-Bot Firewalls](https://fimberelemuwa.com/writing/post-anti-bot-scraping): Understand IP rotation, custom header emulation, TLS fingerprinting, and automated stealth proxies to build resilient scrapers.
+- [How to Write Product-Led Content That Engineers Actually Respect](https://fimberelemuwa.com/writing/post-product-led-content): Stop writing clickbait. Learn how to craft code-first, developer-focused articles that show your product solving real issues without being cheesy.
+
+## External portfolio
+
+- [Developer documentation portfolio (Mintlify)](https://hackmamba-3f164318.mintlify.app/): Live API and product documentation samples.
+
+## Optional
+
+- [LinkedIn](https://www.linkedin.com/in/fimber-elemuwa)
+- [X / Twitter](https://x.com/Fimbosky21)
+- [Instagram](https://www.instagram.com/fimberelems/)
+- [Email](mailto:fimberelemuwa@gmail.com)
