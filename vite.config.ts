@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { vitePrerenderPlugin } from 'vite-prerender-plugin';
-import { DEFAULT_POSTS } from './src/data';
+import { DEFAULT_POST_META } from './src/data/postsMeta';
 
-const postPrerenderRoutes = DEFAULT_POSTS.filter((post) => post.status === 'published').map(
+const postPrerenderRoutes = DEFAULT_POST_META.filter((post) => post.status === 'published').map(
   (post) => `/writing/${post.id}`
 );
 
@@ -26,11 +26,28 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) {
+              if (id.includes('postContents') || id.includes('AdminPanel')) {
+                return 'admin-content';
+              }
+              if (id.includes('BlogPostRoute') || id.includes('BlogPostPage')) {
+                return 'blog-post';
+              }
+              return;
+            }
+            if (id.includes('motion')) return 'vendor-motion';
+            if (id.includes('lucide-react')) return 'vendor-icons';
+            if (id.includes('react-dom') || id.includes('react/')) return 'vendor-react';
+          },
+        },
+      },
+    },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
-      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
   };

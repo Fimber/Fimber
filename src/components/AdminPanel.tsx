@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Search, PlusCircle, Trash2, Edit3, ArrowLeft, CheckCircle, Eye, FileText, Image } from 'lucide-react';
 import { BlogPost } from '../types';
-import { DEFAULT_POSTS } from '../data';
-import { loadPostsFromStorage, savePostsToStorage } from '../lib/blogPosts';
+import { getDefaultPosts, loadPostsFromStorage, savePostsToStorage } from '../lib/blogPosts';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -85,7 +84,7 @@ export default function AdminPanel({ isOpen, onClose, onRefreshBlog }: AdminPane
       setPosts(loadPostsFromStorage());
     } catch (e) {
       console.error('Error fetching blog items:', e);
-      setPosts(DEFAULT_POSTS);
+      setPosts(getDefaultPosts());
     }
   };
 

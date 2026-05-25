@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   ArrowUpRight,
   Linkedin,
@@ -8,27 +7,35 @@ import {
   BookOpen,
 } from 'lucide-react';
 
-// Data & Components
 import { SERVICES, PROJECTS, EXPERIENCES, TESTIMONIALS } from './data';
 import { BlogPost } from './types';
-import { getCrawlablePosts, getPostById, loadPostsFromStorage } from './lib/blogPosts';
+import { getCrawlablePosts, loadPostsFromStorage } from './lib/blogPosts';
 import { navigateTo, parseRoute } from './lib/routes';
 import { applyPageMeta, resolvePageMeta } from './lib/pageMeta';
-import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import Marquee from './components/Marquee';
 import StatsCounter from './components/StatsCounter';
-import AdminLoginModal from './components/AdminLoginModal';
-import AdminPanel from './components/AdminPanel';
-import BlogPostPage from './pages/BlogPostPage';
-import BlogPage from './pages/BlogPage';
 import CompanyLogo from './components/CompanyLogo';
 import ExperienceTimelineItem from './components/ExperienceTimelineItem';
-import ParallaxBackground from './components/ParallaxBackground';
+import SectionBackdrop from './components/SectionBackdrop';
 import ScrollReveal from './components/ScrollReveal';
 import SiteNav from './components/SiteNav';
 import SiteFooter from './components/SiteFooter';
 import ContactForm from './components/ContactForm';
+import HeroImage from './components/HeroImage';
+
+const AdminLoginModal = lazy(() => import('./components/AdminLoginModal'));
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogPostRoute = lazy(() => import('./pages/BlogPostRoute'));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-[40vh] flex items-center justify-center text-slate-500 font-mono text-sm">
+      Loading…
+    </div>
+  );
+}
 
 interface AppProps {
   /** Set during static pre-render at build time */
@@ -42,7 +49,6 @@ export default function App({ prerenderPath }: AppProps = {}) {
   );
   const route = parseRoute(pathname);
 
-  const [loading, setLoading] = useState(!isPrerender);
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -157,17 +163,10 @@ export default function App({ prerenderPath }: AppProps = {}) {
   };
 
   if (route.type === 'post') {
-    const post =
-      posts.find((p) => p.id === route.id && p.status === 'published') ?? getPostById(route.id);
-    if (post) return <BlogPostPage post={post} />;
-    if (!isPrerender) {
-      window.location.replace('/');
-      return null;
-    }
     return (
-      <div className="min-h-screen bg-[#080808] text-[#E0D8D0] flex items-center justify-center p-8">
-        <p>Article not found.</p>
-      </div>
+      <Suspense fallback={<RouteFallback />}>
+        <BlogPostRoute id={route.id} posts={posts} />
+      </Suspense>
     );
   }
 
@@ -178,20 +177,19 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
   const shell = (content: React.ReactNode) => (
     <div className="min-h-screen bg-[#080808] text-[#E0D8D0] relative flex flex-col font-sans">
-      <AnimatePresence>{loading && <Loader onComplete={() => setLoading(false)} />}</AnimatePresence>
-      {!loading && (
-        <>
-          {!isPrerender && <CustomCursor />}
-          <SiteNav
-            pathname={pathname}
-            navScrolled={navScrolled}
-            mobileMenuOpen={mobileMenuOpen}
-            setMobileMenuOpen={setMobileMenuOpen}
-            onNavigate={navigate}
-            onAnchorClick={handleAnchorClick}
-          />
-          {content}
-          <SiteFooter onAdminOpen={() => setLoginModalOpen(true)} />
+      {!isPrerender && <CustomCursor />}
+      <SiteNav
+        pathname={pathname}
+        navScrolled={navScrolled}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        onNavigate={navigate}
+        onAnchorClick={handleAnchorClick}
+      />
+      {content}
+      <SiteFooter onAdminOpen={() => setLoginModalOpen(true)} />
+      {(loginModalOpen || adminPanelOpen) && (
+        <Suspense fallback={null}>
           <AdminLoginModal
             isOpen={loginModalOpen}
             onClose={() => setLoginModalOpen(false)}
@@ -202,19 +200,23 @@ export default function App({ prerenderPath }: AppProps = {}) {
             onClose={() => setAdminPanelOpen(false)}
             onRefreshBlog={refreshBlogPosts}
           />
-        </>
+        </Suspense>
       )}
     </div>
   );
 
   if (route.type === 'blog') {
-    return shell(<BlogPage posts={posts} />);
+    return shell(
+      <Suspense fallback={<RouteFallback />}>
+        <BlogPage posts={posts} />
+      </Suspense>
+    );
   }
 
   return shell(
     <>
           <section className="relative min-h-screen pt-28 md:pt-36 pb-16 md:pb-20 px-6 md:px-12 flex flex-col justify-center overflow-hidden">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.03]" />
+            <SectionBackdrop variant="hero" opacity="opacity-[0.35]" />
             <div className="absolute inset-0 z-0 bg-gradient-to-tr from-[#D4AF37]/[0.015] via-transparent to-[#D4AF37]/[0.02] pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none" />
             <div className="absolute top-1/4 right-0 w-[min(520px,55vw)] h-[min(640px,70vh)] bg-[#5c3a1f]/20 rounded-full blur-[100px] pointer-events-none z-0" />
@@ -227,45 +229,25 @@ export default function App({ prerenderPath }: AppProps = {}) {
                 {/* Copy column — top & bottom aligned with portrait */}
                 <div className="order-2 lg:order-1 flex flex-col justify-between gap-8 lg:min-h-[min(68vh,600px)]">
                   <div className="space-y-6 lg:space-y-7">
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.15 }}
-                      className="inline-flex items-center gap-2 bg-[#D4AF37]/10 border border-[#D4AF37]/20 text-[#D4AF37] rounded-full px-4 py-1.5 font-mono text-xs tracking-widest uppercase"
-                    >
+                    <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 border border-[#D4AF37]/20 text-[#D4AF37] rounded-full px-4 py-1.5 font-mono text-xs tracking-widest uppercase animate-fadeIn">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
                       <span>Open for content contracts</span>
-                    </motion.div>
+                    </div>
 
-                    <motion.h1
-                      initial={{ y: 40, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.25, duration: 0.6 }}
-                      className="font-syne text-[9vw] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4rem] font-extrabold text-[#E0D8D0] leading-[1.02] tracking-tighter"
-                    >
+                    <h1 className="font-syne text-[9vw] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4rem] font-extrabold text-[#E0D8D0] leading-[1.02] tracking-tighter animate-fadeIn">
                       I write technical content for B2B SaaS companies.{' '}
                       <span className="text-[#D4AF37]">I also write the code.</span>
-                    </motion.h1>
+                    </h1>
                   </div>
 
                   <div className="space-y-6 pt-6 border-t border-white/5">
-                    <motion.p
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.55 }}
-                      className="text-slate-300 text-base md:text-lg font-light max-w-lg leading-relaxed"
-                    >
+                    <p className="text-slate-300 text-base md:text-lg font-light max-w-lg leading-relaxed">
                       I build the demo app, hit the errors, test the edge cases, then write the
                       tutorial. Companies like LogRocket, Permify, Decodo, and Refine hire me to do
                       this on repeat.
-                    </motion.p>
+                    </p>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.65 }}
-                      className="flex flex-wrap gap-3 sm:gap-4 items-center"
-                    >
+                    <div className="flex flex-wrap gap-3 sm:gap-4 items-center">
                       <a
                         href="#contact"
                         onClick={handleAnchorClick}
@@ -283,29 +265,16 @@ export default function App({ prerenderPath }: AppProps = {}) {
                         <span>See My Work</span>
                         <ChevronRight className="w-4 h-4 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" />
                       </a>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Portrait — same height as copy column on desktop */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="order-1 lg:order-2 flex justify-center lg:justify-end lg:h-full"
-                >
+                <div className="order-1 lg:order-2 flex justify-center lg:justify-end lg:h-full">
                   <div className="relative w-full max-w-[300px] sm:max-w-[340px] lg:max-w-none lg:w-full lg:max-w-[400px] lg:h-full lg:min-h-[min(68vh,600px)]">
                     <div className="absolute -inset-3 lg:-inset-4 bg-gradient-to-br from-[#D4AF37]/25 via-[#5c3a1f]/30 to-transparent rounded-[2rem] blur-2xl opacity-80" />
                     <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-[#D4AF37]/50 via-[#D4AF37]/10 to-transparent opacity-60" />
                     <div className="relative h-full min-h-[360px] sm:min-h-[400px] lg:min-h-0 overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/50 bg-[#4a3020] aspect-[4/5] lg:aspect-auto">
-                      <img
-                        src="/images/fimber-elemuwa.png"
-                        alt="Fimber Elemuwa — B2B SaaS Technical Content Writer"
-                        width={480}
-                        height={600}
-                        className="absolute inset-0 w-full h-full object-cover object-[center_12%]"
-                        fetchPriority="high"
-                      />
+                      <HeroImage />
                       <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#080808] via-[#080808]/80 to-transparent pointer-events-none" />
                       <div className="absolute inset-x-0 bottom-0 p-5 pt-12">
                         <p className="font-syne text-xl font-bold text-white tracking-tight">Fimber Elemuwa</p>
@@ -315,7 +284,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </section>
@@ -371,7 +340,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
           {/* 7. Services Section */}
           <section id="services" className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto w-full border-t border-white/5 overflow-hidden">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.02]" />
+            <SectionBackdrop variant="services" opacity="opacity-50" />
             <ScrollReveal>
               <div className="mb-16 relative z-10">
                 <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
@@ -477,7 +446,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
           {/* 8. Selected Works / Projects */}
           <section id="work" className="relative py-24 bg-[#0b0c10]/40 border-y border-white/5 overflow-hidden">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.02]" />
+            <SectionBackdrop variant="work" opacity="opacity-40" />
             <ScrollReveal>
               <div className="max-w-6xl mx-auto w-full px-6 md:px-12 relative z-10">
                 <div className="mb-16">
@@ -498,14 +467,12 @@ export default function App({ prerenderPath }: AppProps = {}) {
                 {/* Projects Grid with Framer Motion hover mechanics */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {PROJECTS.map((proj) => (
-                    <motion.a
+                    <a
                       key={`${proj.client}-${proj.link}`}
                       href={proj.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ y: -6 }}
-                      transition={{ duration: 0.3 }}
-                      className={`rounded-2xl p-8 flex flex-col justify-between min-h-[300px] transition-all duration-300 relative group cursor-none ${
+                      className={`rounded-2xl p-8 flex flex-col justify-between min-h-[300px] transition-all duration-300 relative group cursor-none hover:-translate-y-1.5 ${
                         proj.featured
                           ? 'bg-[#13151c]/30 border border-[#D4AF37]/45 shadow-md shadow-[#D4AF37]/5 hover:border-[#D4AF37]/55 hover:bg-[#13151c]/50'
                           : 'bg-[#090b10] border border-white/5 hover:border-[#D4AF37]/20 hover:bg-[#13151c]/40'
@@ -557,7 +524,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
                           )}
                         </div>
                       </div>
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -566,7 +533,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
           {/* 9. Experience Chronology Timeline */}
           <section id="experience" className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto w-full overflow-hidden">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.02]" />
+            <SectionBackdrop variant="experience" opacity="opacity-40" />
             <ScrollReveal>
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
                 
@@ -596,7 +563,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
           {/* 10. Testimonials Carousel / Grid */}
           <section className="relative py-24 bg-[#0b0c10]/50 border-t border-white/5 space-y-16 overflow-hidden">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.015]" />
+            <SectionBackdrop variant="experience" opacity="opacity-25" />
             <ScrollReveal>
               <div className="max-w-6xl mx-auto w-full px-6 md:px-12 text-center md:text-left relative z-10">
                 <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
@@ -631,7 +598,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
 
           {/* 12. Modern CTA Core Segment */}
           <section id="contact" className="relative py-28 px-6 md:px-12 bg-gradient-to-t from-[#0b0c10] to-[#080808] overflow-hidden border-t border-white/5 text-center">
-            <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.035]" />
+            <SectionBackdrop variant="contact" opacity="opacity-60" />
             {/* Visual tech glowing center circle */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D4AF37]/[0.025] rounded-full blur-3xl pointer-events-none z-0" />
 

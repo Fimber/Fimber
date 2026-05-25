@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -7,14 +7,41 @@ interface ScrollRevealProps {
 }
 
 export default function ScrollReveal({ children, delay = 0 }: ScrollRevealProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-40px', threshold: 0.08 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      ref={ref}
+      className={`transition-all duration-500 ease-out ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+      style={{ transitionDelay: visible ? `${delay}s` : '0s' }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

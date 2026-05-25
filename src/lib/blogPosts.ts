@@ -1,30 +1,44 @@
-import { DEFAULT_POSTS } from '../data';
+import { DEFAULT_POST_META } from '../data/postsMeta';
+import { POST_CONTENTS } from '../data/postContents';
 import { BlogPost } from '../types';
 
 export const BLOG_STORAGE_KEY = 'fe_blog_posts';
 
-/** Posts baked into the bundle — always visible to crawlers and pre-render */
+function withContent(meta: Omit<BlogPost, 'content'>): BlogPost {
+  return { ...meta, content: POST_CONTENTS[meta.id] ?? '' };
+}
+
+/** Full posts — for admin and storage seed only */
+export function getDefaultPosts(): BlogPost[] {
+  return DEFAULT_POST_META.map(withContent);
+}
+
+/** Listing / home — no article bodies */
 export function getCrawlablePosts(): BlogPost[] {
-  return DEFAULT_POSTS.filter((post) => post.status === 'published');
+  return DEFAULT_POST_META.filter((post) => post.status === 'published').map((meta) => ({
+    ...meta,
+    content: '',
+  }));
 }
 
 export function getPostById(id: string): BlogPost | undefined {
-  const fromDefaults = DEFAULT_POSTS.find((post) => post.id === id);
-  if (fromDefaults?.status === 'published') return fromDefaults;
+  const meta = DEFAULT_POST_META.find((post) => post.id === id);
+  if (meta?.status === 'published') return withContent(meta);
   return undefined;
 }
 
 /** Browser-only: admin edits in localStorage (never relied on for SEO) */
 export function loadPostsFromStorage(): BlogPost[] {
-  if (typeof window === 'undefined') return DEFAULT_POSTS;
+  if (typeof window === 'undefined') return getDefaultPosts();
 
   try {
     const saved = localStorage.getItem(BLOG_STORAGE_KEY);
     if (saved) return JSON.parse(saved) as BlogPost[];
-    localStorage.setItem(BLOG_STORAGE_KEY, JSON.stringify(DEFAULT_POSTS));
-    return DEFAULT_POSTS;
+    const defaults = getDefaultPosts();
+    localStorage.setItem(BLOG_STORAGE_KEY, JSON.stringify(defaults));
+    return defaults;
   } catch {
-    return DEFAULT_POSTS;
+    return getDefaultPosts();
   }
 }
 

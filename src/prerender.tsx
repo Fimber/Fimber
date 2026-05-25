@@ -1,13 +1,14 @@
 import { StrictMode } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './App';
-import { DEFAULT_POSTS } from './data';
+import { getCrawlablePosts } from './lib/blogPosts';
+import { DEFAULT_POST_META } from './data/postsMeta';
 import { resolvePageMeta } from './lib/pageMeta';
 import { postPath } from './siteConfig';
 
 export async function prerender(data: { url: string }) {
   const pathname = new URL(data.url, 'http://prerender.local').pathname;
-  const pageMeta = resolvePageMeta(pathname, DEFAULT_POSTS);
+  const pageMeta = resolvePageMeta(pathname, getCrawlablePosts());
 
   const html = renderToString(
     <StrictMode>
@@ -18,7 +19,7 @@ export async function prerender(data: { url: string }) {
   const { parseLinks } = await import('vite-prerender-plugin/parse');
   const discovered = parseLinks(html);
 
-  const postRoutes = DEFAULT_POSTS.filter((p) => p.status === 'published').map((p) =>
+  const postRoutes = DEFAULT_POST_META.filter((p) => p.status === 'published').map((p) =>
     postPath(p.id)
   );
 

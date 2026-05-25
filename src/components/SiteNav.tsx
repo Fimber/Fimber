@@ -1,5 +1,4 @@
 import type { MouseEvent } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 
 interface SiteNavProps {
@@ -46,10 +45,7 @@ export default function SiteNav({
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+      <nav
         className={`fixed top-0 inset-x-0 z-30 transition-all duration-300 px-6 md:px-12 h-20 flex items-center justify-between ${
           navScrolled
             ? 'bg-[#080808]/85 border-b border-white/5 backdrop-blur-md'
@@ -103,50 +99,48 @@ export default function SiteNav({
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden p-2 text-slate-400 hover:text-white rounded-full transition-colors"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
-      </motion.nav>
+      </nav>
 
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed top-20 inset-x-0 bg-[#0b0c10]/95 backdrop-blur-md border-b border-white/5 z-20 flex flex-col p-8 space-y-6"
-          >
-            <div className="flex flex-col gap-4">
-              {HOME_SECTIONS.map(({ label, hash }) => (
-                <a
-                  key={hash}
-                  href={isHome ? `#${hash}` : `/#${hash}`}
-                  onClick={(e) => handleHomeSection(e, hash)}
-                  className="text-base font-syne font-bold hover:text-[#D4AF37] transition-all capitalize"
-                >
-                  {label}
-                </a>
-              ))}
-              <a
-                href="/blog"
-                onClick={(e) => handlePageLink(e, '/blog')}
-                className={`text-base font-syne font-bold transition-all capitalize ${
-                  isBlog ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'
-                }`}
-              >
-                Blog
-              </a>
-            </div>
-
+      <div
+        className={`md:hidden fixed top-20 inset-x-0 bg-[#0b0c10]/95 backdrop-blur-md border-b border-white/5 z-20 flex flex-col p-8 space-y-6 transition-all duration-300 ${
+          mobileMenuOpen
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-2 pointer-events-none'
+        }`}
+      >
+        <div className="flex flex-col gap-4">
+          {HOME_SECTIONS.map(({ label, hash }) => (
             <a
-              href="mailto:fimberelemuwa@gmail.com"
-              className="w-full text-center bg-[#D4AF37] text-[#080808] font-semibold text-sm py-3 rounded-full cursor-none"
+              key={hash}
+              href={isHome ? `#${hash}` : `/#${hash}`}
+              onClick={(e) => handleHomeSection(e, hash)}
+              className="text-base font-syne font-bold hover:text-[#D4AF37] transition-colors capitalize"
             >
-              Hire Me
+              {label}
             </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+          <a
+            href="/blog"
+            onClick={(e) => handlePageLink(e, '/blog')}
+            className={`text-base font-syne font-bold transition-colors capitalize ${
+              isBlog ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'
+            }`}
+          >
+            Blog
+          </a>
+        </div>
+
+        <a
+          href="mailto:fimberelemuwa@gmail.com"
+          className="w-full text-center bg-[#D4AF37] text-[#080808] font-semibold text-sm py-3 rounded-full cursor-none"
+        >
+          Hire Me
+        </a>
+      </div>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { DEFAULT_POSTS } from '../src/data';
+import { DEFAULT_POST_META } from '../src/data/postsMeta';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
@@ -15,7 +15,7 @@ const SITE_DESCRIPTION =
 const BLOG_DESCRIPTION =
   'Technical articles on B2B SaaS, developer tooling, security, scraping, and content strategy.';
 
-const publishedPosts = DEFAULT_POSTS.filter((post) => post.status === 'published');
+const publishedPosts = DEFAULT_POST_META.filter((post) => post.status === 'published');
 
 const postPaths = publishedPosts.map((post) => `/writing/${post.id}`);
 
