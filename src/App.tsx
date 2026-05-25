@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowUpRight,
-  Mail,
   Linkedin,
   ExternalLink,
   ChevronRight,
@@ -10,7 +9,7 @@ import {
 } from 'lucide-react';
 
 // Data & Components
-import { SERVICES, PROJECTS, EXPERIENCES, FEATURED_EXPERIENCES, TESTIMONIALS } from './data';
+import { SERVICES, PROJECTS, EXPERIENCES, TESTIMONIALS } from './data';
 import { BlogPost } from './types';
 import { getCrawlablePosts, getPostById, loadPostsFromStorage } from './lib/blogPosts';
 import { navigateTo, parseRoute } from './lib/routes';
@@ -29,6 +28,7 @@ import ParallaxBackground from './components/ParallaxBackground';
 import ScrollReveal from './components/ScrollReveal';
 import SiteNav from './components/SiteNav';
 import SiteFooter from './components/SiteFooter';
+import ContactForm from './components/ContactForm';
 
 interface AppProps {
   /** Set during static pre-render at build time */
@@ -237,32 +237,15 @@ export default function App({ prerenderPath }: AppProps = {}) {
                       <span>Open for content contracts</span>
                     </motion.div>
 
-                    <h1 className="font-syne text-[10vw] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[4.75rem] font-extrabold text-[#E0D8D0] leading-[0.92] tracking-tighter">
-                      <motion.span
-                        initial={{ y: 40, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.25, duration: 0.6 }}
-                        className="block"
-                      >
-                        I WRITE DOCS & CONTENT
-                      </motion.span>
-                      <motion.span
-                        initial={{ y: 40, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.35, duration: 0.6 }}
-                        className="block text-[#D4AF37]"
-                      >
-                        THAT RANKS,
-                      </motion.span>
-                      <motion.span
-                        initial={{ y: 40, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.45, duration: 0.6 }}
-                        className="block font-medium italic opacity-85"
-                      >
-                        CONVERTS, & EDUCATES.
-                      </motion.span>
-                    </h1>
+                    <motion.h1
+                      initial={{ y: 40, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.25, duration: 0.6 }}
+                      className="font-syne text-[9vw] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4rem] font-extrabold text-[#E0D8D0] leading-[1.02] tracking-tighter"
+                    >
+                      I write technical content for B2B SaaS companies.{' '}
+                      <span className="text-[#D4AF37]">I also write the code.</span>
+                    </motion.h1>
                   </div>
 
                   <div className="space-y-6 pt-6 border-t border-white/5">
@@ -272,7 +255,9 @@ export default function App({ prerenderPath }: AppProps = {}) {
                       transition={{ delay: 0.55 }}
                       className="text-slate-300 text-base md:text-lg font-light max-w-lg leading-relaxed"
                     >
-                      B2B SaaS companies hire me to write production-grade developer documentation, technical tutorials, and product-led content that drives adoption and builds search authority.
+                      I build the demo app, hit the errors, test the edge cases, then write the
+                      tutorial. Companies like LogRocket, Permify, Decodo, and Refine hire me to do
+                      this on repeat.
                     </motion.p>
 
                     <motion.div
@@ -282,7 +267,8 @@ export default function App({ prerenderPath }: AppProps = {}) {
                       className="flex flex-wrap gap-3 sm:gap-4 items-center"
                     >
                       <a
-                        href="mailto:fimberelemuwa@gmail.com"
+                        href="#contact"
+                        onClick={handleAnchorClick}
                         className="group bg-[#D4AF37] hover:bg-[#bfa030] active:scale-[0.98] text-[#080808] font-bold text-base py-3.5 px-7 rounded-full flex items-center gap-2.5 transition-all duration-300 shadow-xl shadow-[#D4AF37]/10 cursor-none"
                       >
                         <span>Start a Project</span>
@@ -290,22 +276,12 @@ export default function App({ prerenderPath }: AppProps = {}) {
                       </a>
 
                       <a
-                        href="https://hackmamba-3f164318.mintlify.app/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group bg-white/5 border border-[#D4AF37]/30 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10 text-[#E0D8D0] font-bold text-base py-3.5 px-7 rounded-full flex items-center gap-2.5 transition-all duration-300 cursor-none"
-                      >
-                        <span>Docs Portfolio</span>
-                        <ExternalLink className="w-4 h-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </a>
-
-                      <a
                         href="#work"
                         onClick={handleAnchorClick}
-                        className="group hover:text-white text-slate-400 font-mono text-sm tracking-wider uppercase py-3.5 px-5 rounded-full flex items-center gap-1.5 transition-colors"
+                        className="group bg-white/5 border border-white/10 hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 text-[#E0D8D0] font-bold text-base py-3.5 px-7 rounded-full flex items-center gap-2.5 transition-all duration-300 cursor-none"
                       >
-                        <span>Selected Work</span>
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        <span>See My Work</span>
+                        <ChevronRight className="w-4 h-4 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" />
                       </a>
                     </motion.div>
                   </div>
@@ -344,6 +320,38 @@ export default function App({ prerenderPath }: AppProps = {}) {
             </div>
           </section>
 
+          {/* About */}
+          <section id="about" className="relative py-20 md:py-24 px-6 md:px-12 border-t border-white/5">
+            <div className="max-w-3xl mx-auto w-full relative z-10">
+              <ScrollReveal>
+                <div className="space-y-6 text-slate-300 text-base md:text-lg font-light leading-relaxed">
+                  <p>
+                    I studied Medical Microbiology at the University of Port Harcourt. Yeah,
+                    microbiology. Somewhere between bacterial gene expression and building side
+                    projects in React, I figured out I was better at explaining technical systems
+                    than most people who build them.
+                  </p>
+                  <p>
+                    I started freelancing in 2022. Within 8 months I went from &ldquo;I think I want
+                    to write&rdquo; to paid contracts with LogRocket, SitePoint, and In Plain English.
+                    Two years later I was writing RBAC implementation guides for Permify, scraping
+                    infrastructure docs for Decodo, and running content programs across saas.group&apos;s
+                    entire portfolio.
+                  </p>
+                  <p>
+                    I&apos;ve published over 100 technical articles. I&apos;ve managed a developer
+                    publication with 50,000+ readers. I&apos;ve built content systems that drove 35%
+                    organic growth for a web scraping API and landed #1 on Google for authorization
+                    topics.
+                  </p>
+                  <p className="text-[#E0D8D0] font-normal">
+                    I still code most days. That&apos;s the part that matters.
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+          </section>
+
           {/* 5. Endless Infinite Brand Slider */}
           <ScrollReveal>
             <Marquee />
@@ -353,10 +361,10 @@ export default function App({ prerenderPath }: AppProps = {}) {
           <ScrollReveal>
             <section className="py-20 px-6 md:px-12 max-w-6xl mx-auto w-full">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <StatsCounter target={4} suffix="+" label="Years writing content for developer audiences" />
-                <StatsCounter target={10} suffix="+" label="Premium B2B SaaS corporations served" />
-                <StatsCounter target={40} suffix="+" label="Technical deep-dives published & ranking" />
-                <StatsCounter target={90} suffix="%" label="Client retention and contract renewal rate" />
+                <StatsCounter target={4} suffix="+" label="years writing for developer audiences" />
+                <StatsCounter target={15} suffix="+" label="clients across B2B SaaS and devtools" />
+                <StatsCounter target={100} suffix="+" label="articles published and ranking" />
+                <StatsCounter target={100} suffix="%" label="contract renewal rate" />
               </div>
             </section>
           </ScrollReveal>
@@ -365,19 +373,10 @@ export default function App({ prerenderPath }: AppProps = {}) {
           <section id="services" className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto w-full border-t border-white/5 overflow-hidden">
             <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.02]" />
             <ScrollReveal>
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-16 relative z-10">
-                <div className="lg:col-span-8">
-                  <div className="text-sm font-mono text-[#D4AF37] tracking-widest uppercase mb-4 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                    <span>SaaS Specialization</span>
-                  </div>
-                  <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
-                    Premium Content Frameworks That Move Your Funnel
-                  </h2>
-                </div>
-                <p className="lg:col-span-4 text-slate-300 text-base font-light leading-relaxed">
-                  Articles authored are built on robust competitor gap research, meticulous developer interviews, and zero-compromise code validity.
-                </p>
+              <div className="mb-16 relative z-10">
+                <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
+                  What I Do
+                </h2>
               </div>
             </ScrollReveal>
 
@@ -406,25 +405,72 @@ export default function App({ prerenderPath }: AppProps = {}) {
                         {srv.title}
                       </h3>
                       
-                      <p className="text-slate-300 text-base font-light leading-relaxed mb-6">
+                      <p className="text-slate-300 text-base font-light leading-relaxed mb-6 whitespace-pre-line">
                         {srv.description}
                       </p>
                     </div>
 
-                    {/* Horizontal pill tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {srv.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="bg-white/[0.03] border border-white/5 rounded-full px-3.5 py-1 text-xs font-mono tracking-wider text-slate-400 uppercase"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div className="pt-4 border-t border-white/5">
+                      <p className="text-xs font-mono tracking-wide text-slate-500 uppercase mb-1">
+                        Proof
+                      </p>
+                      <p className="text-sm text-[#D4AF37]/90 font-light leading-relaxed">
+                        {srv.proof}
+                        {srv.proofLink && (
+                          <>
+                            {' '}
+                            <a
+                              href={srv.proofLink.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline underline-offset-2 hover:text-[#D4AF37] transition-colors"
+                            >
+                              {srv.proofLink.label} →
+                            </a>
+                          </>
+                        )}
+                      </p>
                     </div>
                   </div>
                   );
                 })}
+              </div>
+            </ScrollReveal>
+          </section>
+
+          {/* Featured case study */}
+          <section className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto w-full border-t border-white/5">
+            <ScrollReveal>
+              <div className="relative z-10">
+                <h2 className="font-syne text-3xl md:text-4xl font-extrabold text-white leading-tight tracking-tight mb-8">
+                  How I Grew Scrape.do&apos;s Organic Traffic by ~35%
+                </h2>
+                <div className="space-y-5 text-slate-300 text-base md:text-lg font-light leading-relaxed max-w-3xl">
+                  <p>
+                    Scrape.do needed developer-focused content to rank for competitive web scraping
+                    keywords. Big players dominated the search results. Their blog was thin.
+                  </p>
+                  <p>
+                    I wrote SDK guides, integration tutorials, and deep technical pieces on anti-bot
+                    bypass, proxy rotation, TLS fingerprinting, and dynamic content handling. Every
+                    article included working code samples that developers could actually run.
+                  </p>
+                  <p>
+                    <span className="text-[#E0D8D0]">
+                      Result: organic traffic grew approximately 35%. Several target keywords hit the
+                      top 3 on Google. The content still ranks.
+                    </span>
+                  </p>
+                </div>
+                <a
+                  href="https://scrape.do/authors/fimber/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-8 font-mono text-sm tracking-widest uppercase text-[#D4AF37] hover:text-[#bfa030] transition-colors"
+                >
+                  <span>See the live articles</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
               </div>
             </ScrollReveal>
           </section>
@@ -434,23 +480,19 @@ export default function App({ prerenderPath }: AppProps = {}) {
             <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.02]" />
             <ScrollReveal>
               <div className="max-w-6xl mx-auto w-full px-6 md:px-12 relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-                  <div>
-                    <div className="text-sm font-mono text-[#D4AF37] tracking-widest uppercase mb-4 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                      <span>Selected Work</span>
-                    </div>
-                    <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
-                      Authoritative Portfolio Exhibits
-                    </h2>
-                  </div>
-                  <a
-                    href="mailto:fimberelemuwa@gmail.com"
-                    className="group inline-flex items-center gap-1.5 font-mono text-sm tracking-wider text-slate-400 hover:text-[#D4AF37] transition-all uppercase cursor-none"
-                  >
-                    <span>Request All Articles</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </a>
+                <div className="mb-16">
+                  <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
+                    Selected Work
+                  </h2>
+                  <p className="text-slate-400 text-base font-light mt-4">
+                    Want the full list?{' '}
+                    <a
+                      href="mailto:fimberelemuwa@gmail.com"
+                      className="text-[#D4AF37] hover:underline underline-offset-2"
+                    >
+                      Email me.
+                    </a>
+                  </p>
                 </div>
 
                 {/* Projects Grid with Framer Motion hover mechanics */}
@@ -530,26 +572,17 @@ export default function App({ prerenderPath }: AppProps = {}) {
                 
                 {/* Sticky timeline info left */}
                 <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-4">
-                  <div className="text-sm font-mono text-[#D4AF37] tracking-widest uppercase flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                    <span>Timeline</span>
-                  </div>
                   <h2 className="font-syne text-4xl font-extrabold text-white leading-tight tracking-tight">
-                    Over Four Years of Dev-Writing Excellence
+                    Experience
                   </h2>
-                  <p className="text-slate-300 text-base font-light leading-relaxed pt-2">
-                    From testing advanced RBAC systems to scaling crawler structures, my editorial focus ensures real engineers recognize immediate authenticity.
+                  <p className="text-slate-300 text-base font-light leading-relaxed pt-4">
+                    Four years writing for developer audiences across authorization, web scraping,
+                    frontend architecture, and SaaS content programs.
                   </p>
                 </div>
 
                 {/* Rolling timelines list right */}
                 <div className="lg:col-span-8 flex flex-col">
-                  {FEATURED_EXPERIENCES.map((exp) => (
-                    <div key={exp.company}>
-                      <ExperienceTimelineItem exp={exp} />
-                    </div>
-                  ))}
-
                   {EXPERIENCES.map((exp) => (
                     <div key={exp.company}>
                       <ExperienceTimelineItem exp={exp} />
@@ -566,12 +599,8 @@ export default function App({ prerenderPath }: AppProps = {}) {
             <ParallaxBackground imageUrl="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80" opacity="opacity-[0.015]" />
             <ScrollReveal>
               <div className="max-w-6xl mx-auto w-full px-6 md:px-12 text-center md:text-left relative z-10">
-                <div className="text-sm font-mono text-[#D4AF37] tracking-widest uppercase mb-4 flex items-center gap-2 justify-center md:justify-start">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                  <span>Verify Trust</span>
-                </div>
                 <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight">
-                  Peer Review Testimonials
+                  What Clients Say
                 </h2>
               </div>
 
@@ -607,29 +636,20 @@ export default function App({ prerenderPath }: AppProps = {}) {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D4AF37]/[0.025] rounded-full blur-3xl pointer-events-none z-0" />
 
             <ScrollReveal>
-              <div className="max-w-4xl mx-auto relative z-10 space-y-8 select-none">
-                <div className="text-sm font-mono text-[#D4AF37] tracking-widest uppercase flex items-center gap-2 justify-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                  <span>Immediate Hiring</span>
-                </div>
-
-                <h2 className="font-syne text-5xl md:text-7xl font-extrabold text-[#ede9e0] leading-tight tracking-tighter">
-                  Let's Build Content That <span className="text-[#D4AF37] italic">Actually Works.</span>
+              <div className="max-w-4xl mx-auto relative z-10 space-y-8">
+                <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-[#ede9e0] leading-tight tracking-tight text-center">
+                  Want to work together?
                 </h2>
 
-                <p className="text-slate-300 text-base md:text-lg font-light max-w-lg mx-auto leading-relaxed">
-                  Whether you need a high-impact technical tutorial, developer-facing RBAC comparisons, or content clustering roadmaps—I have you covered.
+                <p className="text-slate-300 text-base md:text-lg font-light max-w-xl mx-auto leading-relaxed text-center">
+                  I take on 2–3 content contracts at a time. If you need technical tutorials,
+                  developer docs, or a full content program for your SaaS product, reach out.
+                  I&apos;ll get back to you within 24 hours.
                 </p>
 
-                <div className="flex flex-wrap gap-4 items-center justify-center pt-4">
-                  <a
-                    href="mailto:fimberelemuwa@gmail.com"
-                    className="group bg-[#D4AF37] hover:bg-[#bfa030] active:scale-[0.98] text-[#080808] font-bold text-base py-4 px-8 rounded-full flex items-center gap-2.5 transition-all duration-300 shadow-xl shadow-[#D4AF37]/10 cursor-none"
-                  >
-                    <Mail className="w-4 h-4 text-[#080808]" />
-                    <span>Send an Email</span>
-                  </a>
+                <ContactForm />
 
+                <div className="flex justify-center pt-2">
                   <a
                     href="https://www.linkedin.com/in/fimber-elemuwa"
                     target="_blank"

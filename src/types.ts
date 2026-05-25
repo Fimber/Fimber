@@ -15,7 +15,8 @@ export interface Service {
   iconName: 'edit' | 'search' | 'code' | 'calendar' | 'book-open';
   title: string;
   description: string;
-  tags: string[];
+  proof: string;
+  proofLink?: { label: string; href: string };
 }
 
 export interface Project {

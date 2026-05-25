@@ -6,39 +6,47 @@ export const SERVICES: Service[] = [
   {
     num: '01',
     iconName: 'edit',
-    title: 'Technical Content Writing',
-    description: 'Deep-dive tutorials, system design guides, and interactive thought leadership for technical audiences. I write code samples, explain infrastructure architecture, and build educational content developers actually read and respect.',
-    tags: ['Tutorials', 'Guides', 'Thought Leadership']
+    title: 'Technical Tutorials & Guides',
+    description:
+      'I write long-form tutorials that start with a working repo and end with a shipped feature. I write the code, run it, break it on purpose, then walk the reader through the fix. That process is why 40+ of my guides are still live on LogRocket and why developers keep coming back to them.\n\nTopics I go deep on: React architecture, TypeScript patterns, RBAC policy design, web scraping infrastructure, and frontend performance.',
+    proof: '40+ guides on LogRocket · RBAC series for Permify · Scraping tutorials for Decodo',
   },
   {
     num: '02',
-    iconName: 'search',
-    title: 'SEO-Optimised Content',
-    description: 'Technical keyword research, developer query intent mapping, topic clustering, and on-page optimization. I structure articles so they rank for high-value search queries and consistently deliver compounding organic growth.',
-    tags: ['Keyword Research', 'Topic Clusters', 'On-page SEO']
+    iconName: 'book-open',
+    title: 'Developer Documentation & APIs',
+    description:
+      "API references, SDK quickstarts, and full doc sites on Mintlify or Docusaurus. I don't write endpoint specs from a Notion doc someone forwarded me. I test the API, read the response objects, and write docs that reflect what the developer will actually encounter.\n\nI've shipped a complete Mintlify documentation portal from scratch. You can browse it live.",
+    proof: 'Live Mintlify docs portfolio',
+    proofLink: {
+      label: 'Browse the live docs',
+      href: 'https://hackmamba-3f164318.mintlify.app/',
+    },
   },
   {
     num: '03',
     iconName: 'code',
     title: 'Product-Led Content',
-    description: 'Crafting educational content around real developer pain points. Introducing complex software products naturally inside the developer workflow as the practical solution, driving direct sign-ups and user adoption.',
-    tags: ['ICP Mapping', 'Developer Funnel', 'Product Demos']
+    description:
+      "Here's how this works. I build a barebones app with standard open-source tools. I show where it cracks under real conditions. Then I introduce your SDK as the fix, with the exact code to prove it. The reader learns something useful. Your signup rate goes up.\n\nI did this for Permify (25% traffic lift) and Scrape.do (~35% organic growth).",
+    proof: 'Permify content program · Scrape.do developer tutorials',
   },
   {
     num: '04',
-    iconName: 'calendar',
-    title: 'Content Strategy & Architecture',
-    description: 'Creating complete, predictable editorial calendars with competitive content gap analysis, keyword metrics, standard operating procedures, and scalability models. Shift content from custom production to an analytical machine.',
-    tags: ['SOP Design', 'Calendars', 'Competitive Research']
+    iconName: 'search',
+    title: 'SEO & Content Strategy',
+    description:
+      "I don't bolt SEO onto finished drafts. I build it into the content architecture from the outline stage: keyword research, topic clustering, competitive gap analysis, editorial calendars. Then I measure what actually ranks and adjust.",
+    proof: 'Refine SEO overhaul · saas.group content architecture',
   },
   {
     num: '05',
-    iconName: 'book-open',
-    title: 'Developer Documentation & APIs',
+    iconName: 'calendar',
+    title: 'Editorial Management',
     description:
-      'Production-grade API references, SDK guides, and Mintlify-ready doc systems. I structure information architecture, write accurate endpoint specs, and ship docs developers trust on first read.',
-    tags: ['API Reference', 'Mintlify', 'OpenAPI', 'SDK Guides']
-  }
+      "I ran the editorial side of In Plain English, a developer publication with 50,000+ readers. Screened submissions, set code standards, coordinated contributors, formatted newsletters. If you need someone who can manage the whole content operation and write for it too, I've done that.",
+    proof: 'In Plain English (50k+ readers managed)',
+  },
 ];
 
 export const PROJECTS: Project[] = [
@@ -115,15 +123,15 @@ export const PROJECTS: Project[] = [
   }
 ];
 
-/** Shown at the top of the Experience timeline */
-export const FEATURED_EXPERIENCES: Experience[] = [
+/** Experience timeline — most recent first */
+export const EXPERIENCES: Experience[] = [
   {
     date: '2025',
     company: 'Hackmamba',
     category: 'Agency',
     description:
       'Technical content agency partner—writing developer tutorials, product documentation, and editorial programs for B2B SaaS and devtool clients, including Mintlify-ready doc deliverables.',
-    metric: 'Docs + tutorials'
+    metric: 'Docs + tutorials',
   },
   {
     date: '2025',
@@ -131,59 +139,58 @@ export const FEATURED_EXPERIENCES: Experience[] = [
     category: 'Agency',
     description:
       'Contributing technical blogs, API guides, and DevRel-aligned content for devtools and SaaS brands through Studio1’s agency model—coders who write, writers who code.',
-    metric: 'Technical content'
+    metric: 'Technical content',
   },
   {
-    date: '2026',
+    date: '2024',
     company: 'Decodo',
     category: 'Scraping',
     description:
       'Authoring technical content for Decodo’s web scraping platform (formerly Smartproxy)—API tutorials, integration walkthroughs, and developer education on proxies, anti-bot bypass, and data extraction.',
-    metric: 'API + scraping guides'
-  },
-];
-
-export const EXPERIENCES: Experience[] = [
-  {
-    date: '2023',
-    company: 'saas.group',
-    description:
-      'Designing product-led content architectures, developer documentation standards, and SEO-optimised editorial across portfolio brands to acquire technical users.',
-    metric: 'Docs + full-funnel strategy'
-  },
-  {
-    date: '2024',
-    company: 'Permify',
-    description:
-      'Authoring core guides, API-adjacent policy docs, use cases, and technical comparisons for fine-grained authorization, RBAC/ABAC models, and policy languages.',
-    metric: '25% traffic lift'
+    metric: 'API + scraping guides',
   },
   {
     date: '2024',
     company: 'Scrape.do',
     description:
       'Building SDK guides, integration docs, and deep tutorials on scraping infrastructure—pairing product documentation with SEO-driven developer education.',
-    metric: '~35% organic growth'
+    metric: '~35% organic growth',
+  },
+  {
+    date: '2024',
+    company: 'Permify',
+    description:
+      'Authoring core guides, API-adjacent policy docs, use cases, and technical comparisons for fine-grained authorization, RBAC/ABAC models, and policy languages.',
+    metric: '25% traffic lift',
+  },
+  {
+    date: '2023',
+    company: 'saas.group',
+    description:
+      'Designing product-led content architectures, developer documentation standards, and SEO-optimised editorial across portfolio brands to acquire technical users.',
+    metric: 'Docs + full-funnel strategy',
+  },
+  {
+    date: '2023',
+    company: 'In Plain English',
+    description:
+      'Served as Publication Manager. Screened tutorial submissions, formatted code standards, and coordinated newsletters to 50k+ technical readers.',
+    metric: '50k+ readers managed',
   },
   {
     date: '2022',
     company: 'LogRocket',
     description:
       'Writing rich tutorials and structured how-to documentation on React, TypeScript, and web performance—content read by tens of thousands of developers monthly.',
-    metric: '40+ technical guides'
-  },
-  {
-    date: '2023',
-    company: 'In Plain English',
-    description: 'Served as Publication Manager. Screened tutorial submissions, formatted code standards, and coordinated newsletters to 50k+ technical readers.',
-    metric: '50k+ readers managed'
+    metric: '40+ technical guides',
   },
   {
     date: '2022',
     company: 'Refine',
-    description: 'Restructured key landing page copy, optimized tutorial frameworks, and resolved key technical SEO issues regarding code indexing.',
-    metric: '20% traffic + 60% engagement'
-  }
+    description:
+      'Restructured key landing page copy, optimized tutorial frameworks, and resolved key technical SEO issues regarding code indexing.',
+    metric: '20% traffic + 60% engagement',
+  },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [

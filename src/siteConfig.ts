@@ -4,9 +4,9 @@ export const SITE_URL =
   'https://fimberelemuwa.com';
 
 export const SITE_NAME = 'Fimber Elemuwa';
-export const SITE_TAGLINE = 'B2B SaaS Technical Content Writer';
+export const SITE_TAGLINE = 'Technical Content Writer';
 export const SITE_DESCRIPTION =
-  'Technical content writer specializing in B2B SaaS, developer-focused tutorials, SEO content strategy, and technical deep-dives.';
+  'Fimber Elemuwa writes technical tutorials, API documentation, and product-led content for B2B SaaS companies. Clients include LogRocket, Permify, Decodo, and Refine.';
 
 export const BLOG_PAGE_DESCRIPTION =
   'Technical articles on B2B SaaS, developer tooling, security, scraping, and content strategy.';
