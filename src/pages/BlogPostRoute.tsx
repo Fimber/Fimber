@@ -8,8 +8,10 @@ interface BlogPostRouteProps {
 }
 
 export default function BlogPostRoute({ id, posts }: BlogPostRouteProps) {
+  const fromList = posts.find((p) => p.id === id && p.status === 'published');
+  // Listing state strips bodies (getCrawlablePosts); always fall back to bundled content.
   const post =
-    posts.find((p) => p.id === id && p.status === 'published') ?? getPostById(id);
+    (fromList?.content?.trim() ? fromList : undefined) ?? getPostById(id);
 
   if (post) return <BlogPostPage post={post} />;
 

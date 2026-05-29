@@ -21,14 +21,31 @@ const postPaths = publishedPosts.map((post) => `/writing/${post.id}`);
 
 const allPaths = ['/', '/blog', ...postPaths];
 
+function toLastmod(iso: string): string {
+  return iso.slice(0, 10);
+}
+
+const blogLastmod = publishedPosts.reduce(
+  (latest, post) => {
+    const d = post.updatedAt || post.date;
+    return d > latest ? d : latest;
+  },
+  publishedPosts[0]?.updatedAt ?? '2026-05-24T12:00:00Z'
+);
+
 const urls = allPaths
   .map((path) => {
     const loc = `${SITE_URL}${path === '/' ? '/' : path}`;
-    const priority = path === '/' ? '1.0' : path.startsWith('/writing/') ? '0.8' : '0.7';
-    const changefreq = path.startsWith('/writing/') ? 'monthly' : 'weekly';
+    const priority = path === '/' ? '1.0' : path === '/blog' ? '0.8' : '0.7';
+    const post = publishedPosts.find((p) => path === `/writing/${p.id}`);
+    const lastmod = post
+      ? toLastmod(post.updatedAt || post.date)
+      : path === '/blog'
+        ? toLastmod(blogLastmod)
+        : toLastmod(blogLastmod);
     return `  <url>
     <loc>${loc}</loc>
-    <changefreq>${changefreq}</changefreq>
+    <lastmod>${lastmod}</lastmod>
     <priority>${priority}</priority>
   </url>`;
   })
@@ -81,27 +98,6 @@ const robotsPath = join(publicDir, 'robots.txt');
 writeFileSync(
   robotsPath,
   `User-agent: *
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: Anthropic-crawl
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: PerplexityBot
 Allow: /
 
 Sitemap: ${SITE_URL}/sitemap.xml

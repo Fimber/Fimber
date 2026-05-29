@@ -2,7 +2,7 @@ import { BlogPost } from '../types';
 import { getPostById } from './blogPosts';
 import {
   blogIndexJsonLd,
-  blogPostingJsonLd,
+  articleJsonLd,
   breadcrumbJsonLd,
   personJsonLd,
   professionalServiceJsonLd,
@@ -142,7 +142,7 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
             url: articleUrl,
             ogType: 'article',
           }),
-          jsonLdScript(blogPostingJsonLd(post)),
+          jsonLdScript(articleJsonLd(post)),
           jsonLdScript(
             breadcrumbJsonLd([
               { name: 'Home', url: absoluteUrl('/') },

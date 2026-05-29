@@ -26,8 +26,8 @@ import HeroImage from './components/HeroImage';
 
 const AdminLoginModal = lazy(() => import('./components/AdminLoginModal'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
-const BlogPage = lazy(() => import('./pages/BlogPage'));
-const BlogPostRoute = lazy(() => import('./pages/BlogPostRoute'));
+import BlogPage from './pages/BlogPage';
+import BlogPostRoute from './pages/BlogPostRoute';
 
 function RouteFallback() {
   return (
@@ -163,11 +163,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
   };
 
   if (route.type === 'post') {
-    return (
-      <Suspense fallback={<RouteFallback />}>
-        <BlogPostRoute id={route.id} posts={posts} />
-      </Suspense>
-    );
+    return <BlogPostRoute id={route.id} posts={posts} />;
   }
 
   const handleAdminAuthSuccess = () => {
@@ -206,11 +202,7 @@ export default function App({ prerenderPath }: AppProps = {}) {
   );
 
   if (route.type === 'blog') {
-    return shell(
-      <Suspense fallback={<RouteFallback />}>
-        <BlogPage posts={posts} />
-      </Suspense>
-    );
+    return shell(<BlogPage posts={posts} />);
   }
 
   return shell(

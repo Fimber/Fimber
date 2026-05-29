@@ -2,27 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://fimberelemuwa.com/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-05-24</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://fimberelemuwa.com/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-05-24</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fimberelemuwa.com/writing/post-rbac-react</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-05-18</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fimberelemuwa.com/writing/post-anti-bot-scraping</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-05-10</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fimberelemuwa.com/writing/post-product-led-content</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-05-24</lastmod>
+    <priority>0.7</priority>
   </url>
 </urlset>

@@ -4,46 +4,49 @@ export const DEFAULT_POST_META: Omit<BlogPost, 'content'>[] = [
   {
     "id": "post-rbac-react",
     "title": "Building Fine-Grained Role Based Access Control (RBAC) in React Apps",
-    "excerpt": "Deep dive into implementing flexible permissions, guarding routes, and managing user roles dynamically in modern component architectures.",
+    "excerpt": "Architect permission-based RBAC in React: context checkers, Guard components, protected routes, server middleware, multi-tenant orgs, and tests—with Permify-ready patterns.",
     "tags": [
       "Security",
       "RBAC",
       "React",
-      "Auth"
+      "TypeScript",
+      "Permify"
     ],
     "image": "",
     "status": "published",
-    "date": "2026-05-18T10:00:00Z",
-    "updatedAt": "2026-05-18T10:00:00Z"
+    "date": "2026-05-18T12:00:00Z",
+    "updatedAt": "2026-05-18T12:00:00Z"
   },
   {
     "id": "post-anti-bot-scraping",
-    "title": "The Developer's Handbook to Bypassing Modern Anti-Bot Firewalls",
-    "excerpt": "Understand IP rotation, custom header emulation, TLS fingerprinting, and automated stealth proxies to build resilient scrapers.",
+    "title": "How Modern Anti-Bot Systems Work and What Developers Should Know About Web Data Collection",
+    "excerpt": "TLS fingerprinting, JS challenges, behavioral analysis, and the legal landscape (CFAA, hiQ, GDPR)—plus how to build defensible data pipelines without defaulting to aggressive scraping.",
     "tags": [
       "Scraping",
-      "System Design",
-      "Node.js",
-      "Automation"
+      "Web Data",
+      "Security",
+      "Playwright",
+      "Legal"
     ],
     "image": "",
     "status": "published",
-    "date": "2026-05-10T14:30:00Z",
-    "updatedAt": "2026-05-10T14:30:00Z"
+    "date": "2026-05-10T12:00:00Z",
+    "updatedAt": "2026-05-10T12:00:00Z"
   },
   {
     "id": "post-product-led-content",
     "title": "How to Write Product-Led Content That Engineers Actually Respect",
-    "excerpt": "Stop writing clickbait. Learn how to craft code-first, developer-focused articles that show your product solving real issues without being cheesy.",
+    "excerpt": "Lead with the problem, prove credibility with working code, introduce the product honestly, and measure activation—not pageviews. A full guide to product-led content engineers trust.",
     "tags": [
-      "Marketing",
+      "Product-Led Content",
       "B2B SaaS",
       "Developers",
-      "Writing"
+      "Writing",
+      "SEO"
     ],
     "image": "",
     "status": "published",
-    "date": "2026-05-02T16:00:00Z",
-    "updatedAt": "2026-05-02T16:00:00Z"
+    "date": "2026-05-24T12:00:00Z",
+    "updatedAt": "2026-05-24T12:00:00Z"
   }
 ];

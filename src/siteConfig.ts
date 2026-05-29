@@ -15,6 +15,7 @@ export const SOCIAL_LINKS = {
   linkedin: 'https://www.linkedin.com/in/fimber-elemuwa',
   twitter: 'https://x.com/Fimbosky21',
   instagram: 'https://www.instagram.com/fimberelems/',
+  logrocket: 'https://blog.logrocket.com/author/fimberelemuwa/',
   email: 'mailto:fimberelemuwa@gmail.com',
 } as const;
 

@@ -15,11 +15,11 @@ export function personJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: SITE_NAME,
-    jobTitle: SITE_TAGLINE,
     url: SITE_URL,
-    email: 'fimberelemuwa@gmail.com',
-    sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.twitter, SOCIAL_LINKS.instagram],
-    description: SITE_DESCRIPTION,
+    jobTitle: 'Technical Content Writer',
+    description:
+      'B2B SaaS technical content writer specializing in developer tutorials, API documentation, and product-led content.',
+    sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.logrocket],
   };
 }
 
@@ -66,14 +66,18 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   };
 }
 
-export function blogPostingJsonLd(post: BlogPost) {
+function toSchemaDate(iso: string): string {
+  return iso.slice(0, 10);
+}
+
+/** Article schema for individual posts (Google rich results / E-E-A-T) */
+export function articleJsonLd(post: BlogPost) {
+  const url = absoluteUrl(postPath(post.id));
   return {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': 'Article',
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.date,
-    dateModified: post.updatedAt,
     author: {
       '@type': 'Person',
       name: SITE_NAME,
@@ -82,11 +86,20 @@ export function blogPostingJsonLd(post: BlogPost) {
     publisher: {
       '@type': 'Person',
       name: SITE_NAME,
+      url: SITE_URL,
     },
-    url: absoluteUrl(postPath(post.id)),
-    mainEntityOfPage: absoluteUrl(postPath(post.id)),
-    keywords: post.tags?.join(', '),
+    datePublished: toSchemaDate(post.date),
+    dateModified: toSchemaDate(post.updatedAt || post.date),
+    url,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
   };
+}
+
+export function blogPostingJsonLd(post: BlogPost) {
+  return articleJsonLd(post);
 }
 
 export function professionalServiceJsonLd() {

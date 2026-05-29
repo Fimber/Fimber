@@ -9,9 +9,9 @@
 
 ## Articles
 
-- [Building Fine-Grained Role Based Access Control (RBAC) in React Apps](https://fimberelemuwa.com/writing/post-rbac-react): Deep dive into implementing flexible permissions, guarding routes, and managing user roles dynamically in modern component architectures.
-- [The Developer's Handbook to Bypassing Modern Anti-Bot Firewalls](https://fimberelemuwa.com/writing/post-anti-bot-scraping): Understand IP rotation, custom header emulation, TLS fingerprinting, and automated stealth proxies to build resilient scrapers.
-- [How to Write Product-Led Content That Engineers Actually Respect](https://fimberelemuwa.com/writing/post-product-led-content): Stop writing clickbait. Learn how to craft code-first, developer-focused articles that show your product solving real issues without being cheesy.
+- [Building Fine-Grained Role Based Access Control (RBAC) in React Apps](https://fimberelemuwa.com/writing/post-rbac-react): Architect permission-based RBAC in React: context checkers, Guard components, protected routes, server middleware, multi-tenant orgs, and tests—with Permify-ready patterns.
+- [How Modern Anti-Bot Systems Work and What Developers Should Know About Web Data Collection](https://fimberelemuwa.com/writing/post-anti-bot-scraping): TLS fingerprinting, JS challenges, behavioral analysis, and the legal landscape (CFAA, hiQ, GDPR)—plus how to build defensible data pipelines without defaulting to aggressive scraping.
+- [How to Write Product-Led Content That Engineers Actually Respect](https://fimberelemuwa.com/writing/post-product-led-content): Lead with the problem, prove credibility with working code, introduce the product honestly, and measure activation—not pageviews. A full guide to product-led content engineers trust.
 
 ## External portfolio
 

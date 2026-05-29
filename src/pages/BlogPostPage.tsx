@@ -26,7 +26,12 @@ export default function BlogPostPage({ post }: BlogPostPageProps) {
         </div>
 
         <footer className="mt-16 pt-10 border-t border-white/5">
-          <p className="font-syne text-base font-bold text-white">Written by {SITE_NAME}</p>
+          <p className="font-syne text-base font-bold text-white">
+            Written by{' '}
+            <a href="/" className="hover:text-[#D4AF37] transition-colors">
+              {SITE_NAME}
+            </a>
+          </p>
           <p className="text-sm text-slate-500 mt-1">B2B SaaS Technical Content Writer & Editor</p>
         </footer>
       </div>
