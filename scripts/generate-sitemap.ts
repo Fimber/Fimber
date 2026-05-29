@@ -100,6 +100,26 @@ writeFileSync(
   `User-agent: *
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-crawl
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 Sitemap: ${SITE_URL}/sitemap.xml
 `,
   'utf8'

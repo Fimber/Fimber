@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
 import { BlogPost } from '../types';
-import { parseMarkdownToHtml } from './AdminPanel';
+import { parseMarkdownToHtml } from '../lib/markdown';
 
 interface PostReaderModalProps {
   post: BlogPost | null;

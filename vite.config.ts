@@ -31,6 +31,9 @@ export default defineConfig(() => {
         output: {
           manualChunks(id) {
             if (!id.includes('node_modules')) {
+              if (id.includes('src/lib/markdown')) {
+                return 'markdown';
+              }
               if (id.includes('postContents') || id.includes('AdminPanel')) {
                 return 'admin-content';
               }

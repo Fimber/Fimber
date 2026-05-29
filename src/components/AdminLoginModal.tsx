@@ -21,7 +21,12 @@ export default function AdminLoginModal({ isOpen, onClose, onSuccess }: AdminLog
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'fimber2024') {
+    const expected = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (!expected) {
+      setErrorMsg('Admin login is not configured. Set VITE_ADMIN_PASSWORD in your environment.');
+      return;
+    }
+    if (password === expected) {
       onSuccess();
     } else {
       setErrorMsg('Incorrect password. Please try again.');

@@ -27,3 +27,13 @@ export function absoluteUrl(path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `${SITE_URL}${normalized}`;
 }
+
+/** Open Graph / Twitter card image — replace with /images/og-default.png (1200×630) when ready */
+export const DEFAULT_OG_IMAGE = '/images/fimber-elemuwa.webp';
+
+export function resolveOgImage(image?: string): string {
+  const trimmed = image?.trim();
+  if (!trimmed) return absoluteUrl(DEFAULT_OG_IMAGE);
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  return absoluteUrl(trimmed.startsWith('/') ? trimmed : `/${trimmed}`);
+}

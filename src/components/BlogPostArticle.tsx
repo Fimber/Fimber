@@ -1,6 +1,6 @@
 import { Calendar, Clock, Tag } from 'lucide-react';
 import { BlogPost } from '../types';
-import { parseMarkdownToHtml } from './AdminPanel';
+import { parseMarkdownToHtml } from '../lib/markdown';
 
 interface BlogPostArticleProps {
   post: BlogPost;

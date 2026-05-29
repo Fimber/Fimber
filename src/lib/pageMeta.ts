@@ -15,6 +15,7 @@ import {
   SITE_TAGLINE,
   absoluteUrl,
   postPath,
+  resolveOgImage,
 } from '../siteConfig';
 
 export type HeadElement = {
@@ -28,6 +29,7 @@ export type PageMeta = {
   description: string;
   canonicalUrl: string;
   ogType?: string;
+  ogImage: string;
   headElements: HeadElement[];
 };
 
@@ -56,16 +58,19 @@ function socialMeta(opts: {
   description: string;
   url: string;
   ogType?: string;
+  imageUrl: string;
 }): HeadElement[] {
   return [
     metaProperty('og:type', opts.ogType ?? 'website'),
     metaProperty('og:title', opts.title),
     metaProperty('og:description', opts.description),
     metaProperty('og:url', opts.url),
+    metaProperty('og:image', opts.imageUrl),
     metaProperty('og:locale', 'en_US'),
     meta('twitter:card', 'summary_large_image'),
     meta('twitter:title', opts.title),
     meta('twitter:description', opts.description),
+    meta('twitter:image', opts.imageUrl),
   ];
 }
 
@@ -82,14 +87,16 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
 
   if (path === '/') {
     const url = absoluteUrl('/');
+    const ogImage = resolveOgImage();
     return {
       title: homeTitle,
       description: SITE_DESCRIPTION,
       canonicalUrl: url,
+      ogImage,
       headElements: [
         canonical(url),
         meta('description', SITE_DESCRIPTION),
-        ...socialMeta({ title: homeTitle, description: SITE_DESCRIPTION, url }),
+        ...socialMeta({ title: homeTitle, description: SITE_DESCRIPTION, url, imageUrl: ogImage }),
         jsonLdScript(personJsonLd()),
         jsonLdScript(websiteJsonLd()),
         jsonLdScript(professionalServiceJsonLd()),
@@ -101,14 +108,16 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
     const url = absoluteUrl('/blog');
     const blogTitle = `Blog | ${SITE_NAME}`;
     const published = (posts ?? []).filter((p) => p.status === 'published');
+    const ogImage = resolveOgImage();
     return {
       title: blogTitle,
       description: BLOG_PAGE_DESCRIPTION,
       canonicalUrl: url,
+      ogImage,
       headElements: [
         canonical(url),
         meta('description', BLOG_PAGE_DESCRIPTION),
-        ...socialMeta({ title: blogTitle, description: BLOG_PAGE_DESCRIPTION, url }),
+        ...socialMeta({ title: blogTitle, description: BLOG_PAGE_DESCRIPTION, url, imageUrl: ogImage }),
         jsonLdScript(blogIndexJsonLd(published)),
         jsonLdScript(
           breadcrumbJsonLd([
@@ -128,11 +137,13 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
     if (post) {
       const articleUrl = absoluteUrl(postPath(post.id));
       const title = `${post.title} | ${SITE_NAME}`;
+      const ogImage = resolveOgImage(post.image);
       return {
         title,
         description: post.excerpt,
         canonicalUrl: articleUrl,
         ogType: 'article',
+        ogImage,
         headElements: [
           canonical(articleUrl),
           meta('description', post.excerpt),
@@ -141,6 +152,7 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
             description: post.excerpt,
             url: articleUrl,
             ogType: 'article',
+            imageUrl: ogImage,
           }),
           jsonLdScript(articleJsonLd(post)),
           jsonLdScript(
@@ -156,10 +168,12 @@ export function resolvePageMeta(pathname: string, posts?: BlogPost[]): PageMeta 
   }
 
   const url = absoluteUrl('/');
+  const ogImage = resolveOgImage();
   return {
     title: homeTitle,
     description: SITE_DESCRIPTION,
     canonicalUrl: url,
+    ogImage,
     headElements: [],
   };
 }
@@ -196,6 +210,8 @@ export function applyPageMeta(meta: PageMeta) {
   upsertMeta('property', 'og:title', meta.title);
   upsertMeta('property', 'og:description', meta.description);
   upsertMeta('property', 'og:url', meta.canonicalUrl);
+  upsertMeta('property', 'og:image', meta.ogImage);
   upsertMeta('name', 'twitter:title', meta.title);
   upsertMeta('name', 'twitter:description', meta.description);
+  upsertMeta('name', 'twitter:image', meta.ogImage);
 }
